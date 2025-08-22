@@ -54,17 +54,16 @@ const HomePage: React.FC<HomePageProps> = ({ setPage, setSelectedBundle, openCom
     const steps = stepData.map(step => ({ ...step, title: t(step.titleKey), description: t(step.descriptionKey) }));
 
     return (
-        <div className="flex flex-col items-center w-full overflow-x-hidden">
+        <div className="flex flex-col items-center w-full overflow-x-hidden pt-16">
             {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
             
-            <div className="w-full px-4 pt-20">
-                <div className="flex flex-col gap-4">
-                    <HeroSlider setPage={setPage} openCompatModal={openCompatModal} />
-                    {/* Notification Bar */}
-                    <div className="w-full bg-black text-white py-3 px-4 text-center text-sm font-medium rounded-3xl">
-                        <p>{t('existingSubscriberNotice')}</p>
-                    </div>
-                </div>
+            {/* Notification Bar */}
+            <div className="w-full bg-black text-white py-3 px-4 text-center text-sm font-medium">
+                <p>{t('existingSubscriberNotice')}</p>
+            </div>
+            
+            <div className="w-full px-4 pt-4">
+                <HeroSlider setPage={setPage} openCompatModal={openCompatModal} />
             </div>
 
             {/* How It Works Section */}
