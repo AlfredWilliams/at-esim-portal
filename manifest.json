@@ -1,7 +1,7 @@
 {
-  "name": "AT eSIM Platform",
+  "name": "AT eSIM Request",
   "short_name": "AT eSIM",
-  "description": "An online platform for requesting and managing AT eSIM subscriptions. Users can check device compatibility, register for an eSIM, choose a data bundle, pay, and activate their new eSIM.",
+  "description": "Request and manage your AT eSIM online. Check compatibility, choose a bundle, pay, and activate your new eSIM instantly.",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#f1f5f9",

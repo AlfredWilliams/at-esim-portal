@@ -1,6 +1,6 @@
 {
-  "name": "AT eSIM Platform",
-  "description": "An online platform for requesting and managing AT eSIM subscriptions. Users can check device compatibility, register for an eSIM, choose a data bundle, pay, and activate their new eSIM.",
+  "name": "AT eSIM Request",
+  "description": "Request and manage your AT eSIM online. Check compatibility, choose a bundle, pay, and activate your new eSIM instantly.",
   "requestFramePermissions": [
     "camera"
   ]
