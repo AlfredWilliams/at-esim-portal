@@ -57,11 +57,14 @@ const HomePage: React.FC<HomePageProps> = ({ setPage, setSelectedBundle, openCom
         <div className="flex flex-col items-center w-full overflow-x-hidden">
             {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
             
-            <HeroSlider setPage={setPage} openCompatModal={openCompatModal} />
-
-            {/* Notification Bar */}
-            <div className="w-full bg-black text-white py-3 px-4 text-center text-sm font-medium">
-                <p>{t('existingSubscriberNotice')}</p>
+            <div className="w-full px-4 pt-20">
+                <div className="flex flex-col gap-4">
+                    <HeroSlider setPage={setPage} openCompatModal={openCompatModal} />
+                    {/* Notification Bar */}
+                    <div className="w-full bg-black text-white py-3 px-4 text-center text-sm font-medium rounded-3xl">
+                        <p>{t('existingSubscriberNotice')}</p>
+                    </div>
+                </div>
             </div>
 
             {/* How It Works Section */}
