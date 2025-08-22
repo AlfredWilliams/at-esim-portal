@@ -971,7 +971,7 @@ export const translations: { [key: string]: { [key: string]: string } } = {
     },
     gp: {
         // Header & Nav
-        navHowItWorks: 'Sɛnia ɛkɔ',
+        navHowItWorks: 'how eSIM dey Work',
         navOffers: 'Akwaaba Deals',
         navCompatibility: 'If Your Fon Fit',
         navVideos: 'Watch Video See',
@@ -994,7 +994,7 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         existingSubscriberNotice: 'This site be strictly for AT people wey dey already. E no be for new person. Medaase.',
 
         // How It Works Section
-        howItWorksTitle: 'Sɛnia ɛkɔ',
+        howItWorksTitle: 'How eSIM Dey Work',
         howItWorksTooltip: 'This side go show you de simple 6 steps you go take get your eSIM, from you go check if your phone fit am to de time you go receive am for your email.',
         stepCompatTitle: 'Your Fon Fit?',
         stepCompatDesc: 'Check if your smartphone fit handle de new eSIM technology.',
