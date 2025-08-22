@@ -20,15 +20,15 @@ const LanguageSwitcher: React.FC = () => {
 
     return (
         <div className="relative">
-            <GlobeIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 pointer-events-none" />
+            <GlobeIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400 pointer-events-none" />
             <select
                 value={language}
                 onChange={handleLanguageChange}
-                className="pl-10 pr-4 py-2 text-sm font-medium text-slate-300 bg-white/10 hover:bg-white/20 border border-transparent rounded-full appearance-none focus:outline-none focus:ring-2 focus:ring-white transition-colors cursor-pointer"
+                className="pl-10 pr-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-transparent rounded-full appearance-none focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors cursor-pointer"
                 aria-label="Select language"
             >
                 {languages.map(lang => (
-                    <option key={lang.code} value={lang.code} className="text-black">
+                    <option key={lang.code} value={lang.code} className="text-black dark:text-white bg-white dark:bg-slate-800">
                         {lang.name}
                     </option>
                 ))}

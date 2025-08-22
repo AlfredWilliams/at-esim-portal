@@ -832,7 +832,7 @@ const RegistrationPage: React.FC<RegistrationPageProps> = ({ setPage, selectedBu
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-900 p-4 pt-28 md:pt-24">
+        <div className="min-h-screen flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-900 p-4 pt-24">
             {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
             <div className="w-full max-w-2xl bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-8 space-y-8">
                 <h1 className="text-3xl font-bold text-center text-red-600">{t('regTitle')}</h1>

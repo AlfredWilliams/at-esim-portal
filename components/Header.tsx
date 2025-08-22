@@ -7,6 +7,8 @@ import MenuIcon from './icons/MenuIcon';
 import CloseIcon from './icons/CloseIcon';
 import { useTranslation } from '../contexts/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
+import { useTheme } from '../contexts/ThemeContext';
+import ThemeSwitcher from './ThemeSwitcher';
 
 interface HeaderProps {
     setPage: (page: Page) => void;
@@ -25,19 +27,10 @@ const navLinkKeys = [
 
 const Header: React.FC<HeaderProps> = ({ setPage, currentPage, onGetStartedClick, onOpenVideoModal }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isScrolled, setIsScrolled] = useState(false);
     const [activeSection, setActiveSection] = useState('');
     const { t } = useTranslation();
 
     const navLinks = navLinkKeys.map(link => ({...link, text: t(link.key)}));
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 10);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
 
     useEffect(() => {
         if (currentPage !== 'home') {
@@ -55,7 +48,7 @@ const Header: React.FC<HeaderProps> = ({ setPage, currentPage, onGetStartedClick
                 }
             },
             {
-                rootMargin: '-48% 0px -48% 0px',
+                rootMargin: '-40% 0px -55% 0px',
                 threshold: 0,
             }
         );
@@ -80,65 +73,46 @@ const Header: React.FC<HeaderProps> = ({ setPage, currentPage, onGetStartedClick
         const element = document.getElementById(targetId);
         if (currentPage !== 'home') {
             setPage('home');
-            setTimeout(() => element?.scrollIntoView({ behavior: 'smooth' }), 100);
+            setTimeout(() => {
+                const headerHeight = 64; // h-16
+                const elementPosition = element?.getBoundingClientRect().top ?? 0;
+                const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+            }, 100);
         } else {
-            element?.scrollIntoView({ behavior: 'smooth' });
+             const headerHeight = 64; // h-16
+             const elementPosition = element?.getBoundingClientRect().top ?? 0;
+             const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+             window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
         }
         setIsMenuOpen(false);
     };
     
-    const headerClasses = `
-        fixed top-4 left-4 right-4 z-50 
-        transition-all duration-300 ease-in-out
-    `;
-    
-    const containerClasses = `
-        w-full max-w-6xl mx-auto
-        flex items-center justify-between
-        transition-all duration-300 ease-in-out
-        border border-white/20
-        ${isMenuOpen 
-            ? 'bg-slate-900/90 backdrop-blur-xl rounded-2xl flex-col items-stretch p-4 gap-4' 
-            : `bg-slate-900/50 backdrop-blur-lg rounded-full p-2 pl-4 pr-2 ${isScrolled ? 'shadow-lg' : ''}`
-        }
-    `;
-
     return (
-        <header className={headerClasses}>
-            <div className={containerClasses}>
-                <div className="flex items-center justify-between w-full relative">
+        <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex items-center justify-between h-16">
                     {/* Logo */}
-                    <button onClick={() => { setPage('home'); setIsMenuOpen(false); }} className="flex items-center" aria-label="Go to homepage">
+                    <button onClick={() => { setPage('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); setIsMenuOpen(false); }} className="flex items-center" aria-label="Go to homepage">
                         <Logo className="h-8 w-auto" />
                     </button>
-
-                    {/* Centered actions for Mobile */}
-                    <div className="md:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2">
-                         <LanguageSwitcher />
-                         <Button onClick={onGetStartedClick} variant="primary" size="sm" className="whitespace-nowrap">{t('getStarted')}</Button>
-                    </div>
                     
                     {/* Desktop Nav (Centered) */}
-                    <nav className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-1">
+                    <nav className="hidden md:flex items-center gap-1">
                         {navLinks.map(link => (
                             <a
                                 key={link.id}
                                 href={`#${link.id}`}
-                                onClick={(e) => {
-                                    if (link.id === 'videos') {
-                                        e.preventDefault();
-                                        onOpenVideoModal();
-                                    } else {
-                                        handleNavClick(e, link.id);
-                                    }
-                                }}
-                                className={`relative group text-sm font-medium px-3 py-2 rounded-md transition-colors duration-300 ${
-                                    activeSection === link.id ? 'text-white' : 'text-slate-300 hover:text-white'
+                                onClick={(e) => handleNavClick(e, link.id)}
+                                className={`relative group text-sm font-semibold px-3 py-2 rounded-md transition-colors duration-300 ${
+                                    activeSection === link.id 
+                                        ? 'text-red-600 dark:text-red-500' 
+                                        : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                                 }`}
                                 aria-current={activeSection === link.id ? 'page' : undefined}
                             >
                                 {link.text}
-                                <span className={`absolute bottom-1 left-1/2 -translate-x-1/2 w-3/4 h-[2px] bg-red-500 rounded-full transition-transform duration-300 origin-center ${
+                                <span className={`absolute bottom-1 left-1/2 -translate-x-1/2 w-1/2 h-[2px] bg-red-500 rounded-full transition-transform duration-300 origin-center ${
                                     activeSection === link.id ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
                                 }`}></span>
                             </a>
@@ -148,46 +122,47 @@ const Header: React.FC<HeaderProps> = ({ setPage, currentPage, onGetStartedClick
                     {/* Desktop Action Buttons (Right) */}
                     <div className="hidden md:flex items-center gap-2">
                          <LanguageSwitcher />
+                         <ThemeSwitcher />
                          <Button onClick={onGetStartedClick} variant="primary" size="sm">{t('getStarted')}</Button>
                     </div>
 
-
                     {/* Mobile Menu Toggle */}
-                    <div className="md:hidden">
-                        <button onClick={() => setIsMenuOpen(!isMenuOpen)} aria-controls="mobile-menu" aria-expanded={isMenuOpen} className="inline-flex items-center justify-center p-2 rounded-full text-slate-300 hover:text-white bg-white/10 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                    <div className="md:hidden flex items-center gap-2">
+                        <ThemeSwitcher />
+                        <button onClick={() => setIsMenuOpen(!isMenuOpen)} aria-controls="mobile-menu" aria-expanded={isMenuOpen} className="inline-flex items-center justify-center p-2 rounded-md text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500">
                             <span className="sr-only">Open main menu</span>
                             {isMenuOpen ? <CloseIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
                         </button>
                     </div>
                 </div>
 
-                {/* Mobile Menu Content */}
+                 {/* Mobile Menu Content */}
                 {isMenuOpen && (
-                    <nav id="mobile-menu" className="md:hidden flex flex-col items-center gap-2 pt-2 border-t border-white/20">
-                        {navLinks.map(link => (
-                             <a
-                                key={link.id}
-                                href={`#${link.id}`}
-                                onClick={(e) => {
-                                    if (link.id === 'videos') {
-                                        e.preventDefault();
-                                        onOpenVideoModal();
-                                        setIsMenuOpen(false);
-                                    } else {
-                                        handleNavClick(e, link.id);
-                                    }
-                                }}
-                                className={`block w-full text-center px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
-                                    activeSection === link.id
-                                        ? 'bg-white/20 text-white'
-                                        : 'text-slate-300 hover:text-white hover:bg-white/10'
-                                }`}
-                                aria-current={activeSection === link.id ? 'page' : undefined}
-                            >
-                                {link.text}
-                            </a>
-                        ))}
-                    </nav>
+                    <div id="mobile-menu" className="md:hidden pb-4">
+                        <nav className="flex flex-col items-center gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+                            {navLinks.map(link => (
+                                <a
+                                    key={link.id}
+                                    href={`#${link.id}`}
+                                    onClick={(e) => handleNavClick(e, link.id)}
+                                    className={`block w-full text-left px-3 py-3 rounded-md text-base font-medium transition-colors duration-200 ${
+                                        activeSection === link.id
+                                            ? 'bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400'
+                                            : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
+                                    }`}
+                                    aria-current={activeSection === link.id ? 'page' : undefined}
+                                >
+                                    {link.text}
+                                </a>
+                            ))}
+                        </nav>
+                        <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-3">
+                            <Button onClick={() => { onGetStartedClick(); setIsMenuOpen(false); }} variant="primary" size="md" className="w-full">{t('getStarted')}</Button>
+                             <div className="mx-auto">
+                                <LanguageSwitcher />
+                            </div>
+                        </div>
+                    </div>
                 )}
             </div>
         </header>

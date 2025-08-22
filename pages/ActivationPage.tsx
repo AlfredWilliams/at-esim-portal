@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Page } from '../types';
 import Button from '../components/Button';
@@ -22,7 +23,7 @@ const ActivationPage: React.FC<ActivationPageProps> = ({ setPage }) => {
     const setupInstructions = setupInstructionKeys.map(key => t(key));
     
     return (
-        <div className="min-h-screen bg-green-50 dark:bg-slate-900 flex items-center justify-center p-4 pt-28 md:pt-24">
+        <div className="min-h-screen bg-green-50 dark:bg-slate-900 flex items-center justify-center p-4 pt-24">
             <Card className="w-full max-w-2xl text-center p-8 md:p-12">
                 <div className="mx-auto bg-green-100 dark:bg-green-500/10 rounded-full h-20 w-20 flex items-center justify-center mb-6">
                     <CheckCircleIcon className="h-12 w-12 text-green-600 dark:text-green-400" />

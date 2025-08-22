@@ -37,7 +37,7 @@ const BundleSelectionPage: React.FC<BundleSelectionPageProps> = ({ setPage, setS
     };
 
     return (
-        <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 pt-28 md:pt-24">
+        <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 pt-24">
             <div className="w-full max-w-5xl mx-auto text-center">
                 <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-800 dark:text-white mb-4">{t('chooseYourPlan')}</h1>
                 <p className="text-lg text-slate-600 dark:text-slate-300 mb-12">{t('chooseYourPlanSubtitle')}</p>

@@ -57,7 +57,7 @@ const AppContent: React.FC = () => {
     };
 
     return (
-        <main className="min-h-screen font-sans pb-16 md:pb-0">
+        <main className="min-h-screen font-sans pb-16">
             <Header
                 setPage={setCurrentPage}
                 currentPage={currentPage}

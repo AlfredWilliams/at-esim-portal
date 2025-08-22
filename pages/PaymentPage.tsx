@@ -72,7 +72,7 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ setPage, selectedBundle }) =>
     }
 
     return (
-        <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex items-center justify-center p-4 pt-28 md:pt-24">
+        <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex items-center justify-center p-4 pt-24">
             <div className="w-full max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Payment Form Side */}
                 <Card className="p-8">
