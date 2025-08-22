@@ -1,4 +1,4 @@
-const CACHE_NAME = 'at-esim-pwa-v5';
+const CACHE_NAME = 'at-esim-pwa-v6';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -44,8 +44,11 @@ self.addEventListener('fetch', event => {
             return networkResponse;
           }
         ).catch(() => {
-            // If the fetch fails (e.g., offline) and there's no cache match,
-            // the user will see the browser's default offline page.
+            // If the fetch fails (e.g., offline) and it's a navigation request,
+            // serve the cached index.html as a fallback for the SPA.
+            if (event.request.mode === 'navigate') {
+              return caches.match('/index.html');
+            }
         });
       })
   );
