@@ -57,14 +57,16 @@ const AppContent: React.FC = () => {
     };
 
     return (
-        <main className="min-h-screen font-sans pb-16">
+        <main className="min-h-screen font-sans flex flex-col">
             <Header
                 setPage={setCurrentPage}
                 currentPage={currentPage}
                 onGetStartedClick={openCompatModal}
                 onOpenVideoModal={openVideoModal}
             />
-            {renderPage()}
+            <div className="flex-1 pb-16 md:pb-0">
+                {renderPage()}
+            </div>
 
             <ContactFAB onContactClick={openContactModal} onVideoClick={openVideoModal} />
 
