@@ -61,7 +61,7 @@ const HomePage: React.FC<HomePageProps> = ({ setPage, setSelectedBundle, openCom
                 
                 {/* Notification Bar */}
                 {isNotificationVisible && (
-                    <div className="relative w-full bg-black text-white py-3 px-4 text-center text-sm font-medium flex items-center justify-center">
+                    <div className="relative w-full bg-[#01367a] text-white py-3 px-4 text-center text-sm font-medium flex items-center justify-center">
                         <p>{t('existingSubscriberNotice')}</p>
                         <button
                             onClick={() => setIsNotificationVisible(false)}
