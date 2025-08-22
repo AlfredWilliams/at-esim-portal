@@ -7,8 +7,6 @@ import MenuIcon from './icons/MenuIcon';
 import CloseIcon from './icons/CloseIcon';
 import { useTranslation } from '../contexts/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
-import { useTheme } from '../contexts/ThemeContext';
-import ThemeSwitcher from './ThemeSwitcher';
 
 interface HeaderProps {
     setPage: (page: Page) => void;
@@ -119,16 +117,20 @@ const Header: React.FC<HeaderProps> = ({ setPage, currentPage, onGetStartedClick
                         ))}
                     </nav>
 
+                    {/* Mobile Actions (Centered) */}
+                    <div className="md:hidden flex items-center gap-2">
+                        <LanguageSwitcher />
+                        <Button onClick={onGetStartedClick} variant="primary" size="sm">{t('getStarted')}</Button>
+                    </div>
+
                     {/* Desktop Action Buttons (Right) */}
                     <div className="hidden md:flex items-center gap-2">
                          <LanguageSwitcher />
-                         <ThemeSwitcher />
                          <Button onClick={onGetStartedClick} variant="primary" size="sm">{t('getStarted')}</Button>
                     </div>
 
                     {/* Mobile Menu Toggle */}
-                    <div className="md:hidden flex items-center gap-2">
-                        <ThemeSwitcher />
+                    <div className="md:hidden">
                         <button onClick={() => setIsMenuOpen(!isMenuOpen)} aria-controls="mobile-menu" aria-expanded={isMenuOpen} className="inline-flex items-center justify-center p-2 rounded-md text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500">
                             <span className="sr-only">Open main menu</span>
                             {isMenuOpen ? <CloseIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
@@ -156,12 +158,6 @@ const Header: React.FC<HeaderProps> = ({ setPage, currentPage, onGetStartedClick
                                 </a>
                             ))}
                         </nav>
-                        <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-3">
-                            <Button onClick={() => { onGetStartedClick(); setIsMenuOpen(false); }} variant="primary" size="md" className="w-full">{t('getStarted')}</Button>
-                             <div className="mx-auto">
-                                <LanguageSwitcher />
-                            </div>
-                        </div>
                     </div>
                 )}
             </div>
