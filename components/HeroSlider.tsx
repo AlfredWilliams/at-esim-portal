@@ -70,7 +70,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ setPage, openCompatModal }) => 
     
 
     return (
-        <section className="relative w-full h-svh max-h-[800px] overflow-hidden text-white">
+        <section className="relative w-full h-[70vh] max-h-[750px] overflow-hidden text-white rounded-3xl">
             <div className="w-full h-full flex transition-transform duration-700 ease-in-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
                 {slides.map((slide, index) => (
                     <div key={index} className={`w-full h-full flex-shrink-0 ${slide.color} flex items-center justify-center p-4`}>
