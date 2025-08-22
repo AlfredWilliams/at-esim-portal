@@ -15,7 +15,7 @@ const ContactFAB: React.FC<ContactFABProps> = ({ onContactClick, onVideoClick })
     return (
         <>
             {/* Mobile Bottom Navigation */}
-            <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 h-16 bg-slate-900/80 backdrop-blur-lg border-t border-slate-700/50 shadow-[0_-2px_10px_rgba(0,0,0,0.2)]">
+            <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 h-16 bg-black border-t border-slate-700/50 shadow-[0_-2px_10px_rgba(0,0,0,0.2)]">
                 <nav className="h-full flex justify-around items-stretch text-slate-300">
                     <button
                         onClick={onVideoClick}
