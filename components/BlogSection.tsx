@@ -36,8 +36,23 @@ const blogPosts: BlogPost[] = [
     },
 ];
 
+// Local icons for slider navigation
+const ChevronLeftIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className={className}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+    </svg>
+);
+
+const ChevronRightIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className={className}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+    </svg>
+);
+
+
 const BlogSection: React.FC = () => {
     const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+    const [currentSlide, setCurrentSlide] = useState(0);
     const { t } = useTranslation();
 
     const handleCardClick = (post: BlogPost) => {
@@ -47,6 +62,19 @@ const BlogSection: React.FC = () => {
     const closeModal = () => {
         setSelectedPost(null);
     };
+
+    const nextSlide = () => {
+        setCurrentSlide(prev => (prev === blogPosts.length - 1 ? 0 : prev + 1));
+    };
+
+    const prevSlide = () => {
+        setCurrentSlide(prev => (prev === 0 ? blogPosts.length - 1 : prev - 1));
+    };
+
+    const goToSlide = (index: number) => {
+        setCurrentSlide(index);
+    };
+
 
     return (
         <>
@@ -58,7 +86,53 @@ const BlogSection: React.FC = () => {
                     </Tooltip>
                 </div>
                 <p className="text-lg text-slate-600 dark:text-slate-300 text-center mb-12">{t('blogSubtitle')}</p>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                {/* Mobile Slider View */}
+                <div className="md:hidden relative px-4 pb-8">
+                    <div className="overflow-hidden rounded-xl">
+                        <div 
+                            className="flex transition-transform duration-500 ease-in-out"
+                            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                        >
+                            {blogPosts.map(post => (
+                                <div key={`${post.id}-slider`} className="w-full flex-shrink-0 px-2">
+                                    <BlogCard post={post} onCardClick={handleCardClick} />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Navigation */}
+                    <button
+                        onClick={prevSlide}
+                        className="absolute top-1/2 left-0 -translate-y-1/2 bg-white/60 dark:bg-slate-800/60 p-2 rounded-full hover:bg-white/90 dark:hover:bg-slate-800/90 transition-all duration-300 z-10 shadow-lg backdrop-blur-sm"
+                        aria-label="Previous blog post"
+                    >
+                        <ChevronLeftIcon className="h-6 w-6 text-slate-800 dark:text-slate-200" />
+                    </button>
+                    <button
+                        onClick={nextSlide}
+                        className="absolute top-1/2 right-0 -translate-y-1/2 bg-white/60 dark:bg-slate-800/60 p-2 rounded-full hover:bg-white/90 dark:hover:bg-slate-800/90 transition-all duration-300 z-10 shadow-lg backdrop-blur-sm"
+                        aria-label="Next blog post"
+                    >
+                        <ChevronRightIcon className="h-6 w-6 text-slate-800 dark:text-slate-200" />
+                    </button>
+            
+                    {/* Dots */}
+                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
+                        {blogPosts.map((_, index) => (
+                            <button 
+                                key={index} 
+                                onClick={() => goToSlide(index)} 
+                                className={`h-2 rounded-full transition-all duration-500 ease-in-out ${currentSlide === index ? 'w-6 bg-red-600' : 'w-2 bg-slate-300 dark:bg-slate-600 hover:bg-slate-400'}`} 
+                                aria-label={`Go to blog post ${index + 1}`}
+                            ></button>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Desktop Grid View */}
+                <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {blogPosts.map(post => (
                         <BlogCard key={post.id} post={post} onCardClick={handleCardClick} />
                     ))}

@@ -30,9 +30,22 @@ const slideData = [
     }
 ];
 
+const PauseIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M10 9v6m4-6v6" />
+    </svg>
+);
+
+const PlayIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+    </svg>
+);
+
 
 const HeroSlider: React.FC<HeroSliderProps> = ({ setPage, openCompatModal }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [isPlaying, setIsPlaying] = useState(true);
     const { t } = useTranslation();
     const slides = slideData.map(slide => ({
         ...slide,
@@ -46,9 +59,11 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ setPage, openCompatModal }) => 
     }, [slides.length]);
 
     useEffect(() => {
-        const slideInterval = setInterval(nextSlide, 5000);
-        return () => clearInterval(slideInterval);
-    }, [nextSlide]);
+        if (isPlaying) {
+            const slideInterval = setInterval(nextSlide, 5000);
+            return () => clearInterval(slideInterval);
+        }
+    }, [nextSlide, isPlaying]);
     
     const prevSlide = () => {
         setCurrentSlide(prev => (prev === 0 ? slides.length - 1 : prev - 1));
@@ -56,6 +71,10 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ setPage, openCompatModal }) => 
 
     const goToSlide = (index: number) => {
         setCurrentSlide(index);
+    };
+
+    const togglePlayPause = () => {
+        setIsPlaying(prev => !prev);
     };
 
     const handleButtonClick = (buttonKey: string) => {
@@ -117,6 +136,14 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ setPage, openCompatModal }) => 
                     ></button>
                 ))}
             </div>
+
+            <button
+                onClick={togglePlayPause}
+                className="absolute bottom-4 right-4 bg-black bg-opacity-30 p-2 rounded-full hover:bg-opacity-50 transition-all duration-300 z-10"
+                aria-label={isPlaying ? 'Pause slider' : 'Play slider'}
+            >
+                {isPlaying ? <PauseIcon className="h-6 w-6" /> : <PlayIcon className="h-6 w-6" />}
+            </button>
         </section>
     );
 };
