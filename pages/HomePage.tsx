@@ -31,6 +31,7 @@ const HomePage: React.FC<HomePageProps> = ({ setPage, setSelectedBundle, openCom
     const [faqs, setFaqs] = useState<FaqItem[]>([]);
     const [isLoadingFaqs, setIsLoadingFaqs] = useState(true);
     const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+    const [isNotificationVisible, setIsNotificationVisible] = useState(true);
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -58,9 +59,20 @@ const HomePage: React.FC<HomePageProps> = ({ setPage, setSelectedBundle, openCom
             {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
             
             {/* Notification Bar */}
-            <div className="w-full bg-black text-white py-3 px-4 text-center text-sm font-medium">
-                <p>{t('existingSubscriberNotice')}</p>
-            </div>
+            {isNotificationVisible && (
+                <div className="relative w-full bg-black text-white py-3 px-4 text-center text-sm font-medium flex items-center justify-center">
+                    <p>{t('existingSubscriberNotice')}</p>
+                    <button
+                        onClick={() => setIsNotificationVisible(false)}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-white/70 hover:text-white transition-colors"
+                        aria-label="Dismiss notification"
+                    >
+                        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+            )}
             
             <div className="w-full px-4 pt-4">
                 <HeroSlider setPage={setPage} openCompatModal={openCompatModal} />
