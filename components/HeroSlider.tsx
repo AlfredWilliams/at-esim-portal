@@ -139,7 +139,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ setPage, openCompatModal }) => 
 
             <button
                 onClick={togglePlayPause}
-                className="absolute bottom-4 right-4 bg-black bg-opacity-30 p-2 rounded-full hover:bg-opacity-50 transition-all duration-300 z-10"
+                className="absolute bottom-4 left-4 bg-black bg-opacity-30 p-2 rounded-full hover:bg-opacity-50 transition-all duration-300 z-10"
                 aria-label={isPlaying ? 'Pause slider' : 'Play slider'}
             >
                 {isPlaying ? <PauseIcon className="h-6 w-6" /> : <PlayIcon className="h-6 w-6" />}
