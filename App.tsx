@@ -9,7 +9,6 @@ import PaymentPage from './pages/PaymentPage';
 import ActivationPage from './pages/ActivationPage';
 import Modal from './components/Modal';
 import Button from './components/Button';
-import FloatingActionButtons from './components/FloatingActionButtons';
 import { LanguageProvider, useTranslation } from './contexts/LanguageContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import WhatsappIcon from './components/icons/WhatsappIcon';
@@ -42,7 +41,7 @@ const AppContent: React.FC = () => {
     const renderPage = () => {
         switch (currentPage) {
             case 'home':
-                return <HomePage setPage={setCurrentPage} setSelectedBundle={setSelectedBundle} openCompatModal={openCompatModal} openContactModal={openContactModal} />;
+                return <HomePage setPage={setCurrentPage} setSelectedBundle={setSelectedBundle} openCompatModal={openCompatModal} openContactModal={openContactModal} openVideoModal={openVideoModal} />;
             case 'registration':
                 return <RegistrationPage setPage={setCurrentPage} selectedBundle={selectedBundle} setSelectedBundle={setSelectedBundle} />;
             case 'bundles':
@@ -52,7 +51,7 @@ const AppContent: React.FC = () => {
             case 'activation':
                 return <ActivationPage setPage={setCurrentPage} />;
             default:
-                return <HomePage setPage={setCurrentPage} setSelectedBundle={setSelectedBundle} openCompatModal={openCompatModal} openContactModal={openContactModal} />;
+                return <HomePage setPage={setCurrentPage} setSelectedBundle={setSelectedBundle} openCompatModal={openCompatModal} openContactModal={openContactModal} openVideoModal={openVideoModal} />;
         }
     };
 
@@ -64,11 +63,9 @@ const AppContent: React.FC = () => {
                 onGetStartedClick={openCompatModal}
                 onOpenVideoModal={openVideoModal}
             />
-            <div className="flex-1 pb-16 md:pb-0">
+            <div className="flex-1">
                 {renderPage()}
             </div>
-
-            <FloatingActionButtons onContactClick={openContactModal} onVideoClick={openVideoModal} />
 
             <Modal isOpen={isCompatModalOpen} onClose={() => setIsCompatModalOpen(false)} title={t('compatModalTitle')}>
                 <p className="text-slate-600 dark:text-slate-300 mb-6">

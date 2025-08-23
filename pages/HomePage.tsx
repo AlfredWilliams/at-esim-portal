@@ -12,6 +12,7 @@ import Toast from '../components/Toast';
 import BlogSection from '../components/BlogSection';
 import SpecialOffers from '../components/SpecialOffers';
 import Footer from '../components/Footer';
+import FloatingActionButtons from '../components/FloatingActionButtons';
 import InfoIcon from '../components/icons/InfoIcon';
 import Tooltip from '../components/Tooltip';
 import { useTranslation } from '../contexts/LanguageContext';
@@ -25,9 +26,10 @@ interface HomePageProps {
     setSelectedBundle: (bundle: Bundle) => void;
     openCompatModal: () => void;
     openContactModal: () => void;
+    openVideoModal: () => void;
 }
 
-const HomePage: React.FC<HomePageProps> = ({ setPage, setSelectedBundle, openCompatModal, openContactModal }) => {
+const HomePage: React.FC<HomePageProps> = ({ setPage, setSelectedBundle, openCompatModal, openContactModal, openVideoModal }) => {
     const [faqs, setFaqs] = useState<FaqItem[]>([]);
     const [isLoadingFaqs, setIsLoadingFaqs] = useState(true);
     const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
@@ -154,6 +156,7 @@ const HomePage: React.FC<HomePageProps> = ({ setPage, setSelectedBundle, openCom
                 </section>
             </div>
             <Footer onContactClick={openContactModal} />
+            <FloatingActionButtons onContactClick={openContactModal} onVideoClick={openVideoModal} />
         </div>
     );
 };
