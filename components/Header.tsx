@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { Page } from '../types';
 import Button from './Button';
@@ -88,7 +89,7 @@ const Header: React.FC<HeaderProps> = ({ setPage, currentPage, onGetStartedClick
     
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-[env(safe-area-inset-top)]">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
                     <button onClick={() => { setPage('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); setIsMenuOpen(false); }} className="flex items-center" aria-label="Go to homepage">

@@ -1,6 +1,7 @@
 
 
 
+
 import React, { useState } from 'react';
 import { Page, Bundle } from './types';
 import Header from './components/Header';
@@ -75,7 +76,7 @@ const AppContent: React.FC = () => {
     };
 
     return (
-        <main className="min-h-screen font-sans flex flex-col">
+        <main className="min-h-screen font-sans flex flex-col pt-[env(safe-area-inset-top)]">
             <Header
                 setPage={setCurrentPage}
                 currentPage={currentPage}
