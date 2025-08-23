@@ -9,7 +9,7 @@ import PaymentPage from './pages/PaymentPage';
 import ActivationPage from './pages/ActivationPage';
 import Modal from './components/Modal';
 import Button from './components/Button';
-import ContactFAB from './components/ContactFAB';
+import FloatingActionButtons from './components/FloatingActionButtons';
 import { LanguageProvider, useTranslation } from './contexts/LanguageContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import WhatsappIcon from './components/icons/WhatsappIcon';
@@ -68,7 +68,7 @@ const AppContent: React.FC = () => {
                 {renderPage()}
             </div>
 
-            <ContactFAB onContactClick={openContactModal} onVideoClick={openVideoModal} />
+            <FloatingActionButtons onContactClick={openContactModal} onVideoClick={openVideoModal} />
 
             <Modal isOpen={isCompatModalOpen} onClose={() => setIsCompatModalOpen(false)} title={t('compatModalTitle')}>
                 <p className="text-slate-600 dark:text-slate-300 mb-6">

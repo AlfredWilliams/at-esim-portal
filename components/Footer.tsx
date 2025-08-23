@@ -1,5 +1,5 @@
+
 import React from 'react';
-import NewsletterSubscribe from './NewsletterSubscribe';
 import Logo from './icons/Logo';
 import FacebookIcon from './icons/FacebookIcon';
 import TwitterIcon from './icons/TwitterIcon';
@@ -31,11 +31,6 @@ const Footer: React.FC<FooterProps> = ({ onContactClick }) => {
     return (
         <footer className="w-full bg-slate-200 dark:bg-slate-950/50 pt-16 sm:pt-24 px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto">
-                {/* Newsletter Section */}
-                <div className="mb-16">
-                    <NewsletterSubscribe />
-                </div>
-
                 {/* Main Footer Content */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
                     {/* About Section */}

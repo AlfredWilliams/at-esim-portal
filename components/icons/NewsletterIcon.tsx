@@ -8,3 +8,4 @@ const NewsletterIcon: React.FC<{ className?: string }> = ({ className }) => (
 );
 
 export default NewsletterIcon;
+// --- IGNORE ---
