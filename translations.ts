@@ -80,7 +80,16 @@ export const translations: { [key: string]: { [key: string]: string } } = {
 
         // FAQ Section
         faqTitle: 'Frequently Asked Questions',
-        loadingFaqs: 'Loading FAQs...',
+        faq1Question: "What is an eSIM?",
+        faq1Answer: "An eSIM is a digital SIM that allows you to activate a cellular plan from your carrier without having to use a physical nano-SIM.",
+        faq2Question: "How do I activate my eSIM?",
+        faq2Answer: "Activation is simple. After payment, you will receive a QR code. Scan it with your phone's camera in the cellular settings to install the eSIM profile.",
+        faq3Question: "Is my device compatible?",
+        faq3Answer: "Most new smartphones from Apple, Samsung, and Google support eSIM. Use our compatibility checker on the homepage to verify your specific model.",
+        faq4Question: "Can I use my physical SIM and an eSIM at the same time?",
+        faq4Answer: "Yes, if your phone supports Dual SIM with an eSIM, you can use both a physical SIM and an eSIM simultaneously, for example, one for personal and one for business.",
+        faq5Question: "What happens if I lose my phone?",
+        faq5Answer: "Your eSIM profile is secure. You can contact our support to have your eSIM profile temporarily suspended and re-issued to a new device when you get one. It's more secure than a physical SIM which can be removed and used in another phone.",
         
         // Blog Section
         blogTitle: 'Latest News & Insights',
@@ -342,7 +351,16 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         videosSubtitle: 'Des guides visuels pour vous aider à démarrer en un rien de temps.',
 
         faqTitle: 'Questions frequently posées',
-        loadingFaqs: 'Chargement des FAQ...',
+        faq1Question: "Qu'est-ce qu'une eSIM ?",
+        faq1Answer: "Une eSIM est une SIM numérique qui vous permet d'activer un forfait cellulaire de votre opérateur sans avoir à utiliser une nano-SIM physique.",
+        faq2Question: "Comment activer mon eSIM ?",
+        faq2Answer: "L'activation est simple. Après le paiement, vous recevrez un code QR. Scannez-le avec l'appareil photo de votre téléphone dans les paramètres cellulaires pour installer le profil eSIM.",
+        faq3Question: "Mon appareil est-il compatible ?",
+        faq3Answer: "La plupart des nouveaux smartphones d'Apple, Samsung et Google prennent en charge l'eSIM. Utilisez notre vérificateur de compatibilité sur la page d'accueil pour vérifier votre modèle spécifique.",
+        faq4Question: "Puis-je utiliser ma SIM physique et une eSIM en même temps ?",
+        faq4Answer: "Oui, si votre téléphone prend en charge la double SIM avec une eSIM, vous pouvez utiliser simultanément une SIM physique et une eSIM, par exemple, une pour un usage personnel et une pour un usage professionnel.",
+        faq5Question: "Que se passe-t-il si je perds mon téléphone ?",
+        faq5Answer: "Votre profil eSIM est sécurisé. Vous pouvez contacter notre support pour faire suspendre temporairement votre profil eSIM et le réémettre sur un nouvel appareil lorsque vous en aurez un. C'est plus sûr qu'une SIM physique qui peut être retirée et utilisée dans un autre téléphone.",
         
         blogTitle: 'Dernières nouvelles et aperçus',
         blogTooltip: 'Restez à jour avec les dernières nouvelles sur la technologie eSIM, des conseils de voyage et les actualités de l\'entreprise à travers nos articles.',
@@ -595,8 +613,17 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         videosSubtitle: 'Mfonini mu akwankyerɛ a ɛbɛboa wo ma woafi ase prɛko pɛ.',
         
         faqTitle: 'Nsemmisa a Wɔtaa Bisa',
-        loadingFaqs: 'Yɛregye FAQ...',
-        
+        faq1Question: "Dɛn ne eSIM?",
+        faq1Answer: "eSIM yɛ digital SIM a ɛma wutumi de w'ankasa cellular plan yɛ adwuma a wunhia sɛ wode physical nano-SIM hyɛ mu.",
+        faq2Question: "Mɛyɛ dɛn na m'eSIM ayɛ adwuma?",
+        faq2Answer: "Sɛnea wɔyɛ no yɛ mmerɛw. Sɛ wutua ka wie a, wubenya QR code. Fa wo fon kamera skan no wɔ cellular settings mu na install eSIM profile no.",
+        faq3Question: "Me fon no ne eSIM hyia?",
+        faq3Answer: "Apple, Samsung, ne Google fon foforo dodow no ara tumi fa eSIM. Fa yɛn compatibility checker a ɛwɔ homepage no so hwɛ wo model pɔtee no.",
+        faq4Question: "Metumi de me physical SIM ne eSIM adi dwuma prɛko pɛ?",
+        faq4Answer: "Aane, sɛ wo fon no tumi fa Dual SIM a eSIM ka ho a, wubetumi de physical SIM ne eSIM adi dwuma prɛko pɛ, sɛ nhwɛsoɔ no, de baako ayɛ w'ankasa deɛ na de baako ayɛ adwuma deɛ.",
+        faq5Question: "Sɛ me fon yera a, ɛdɛn na ɛbɛsi?",
+        faq5Answer: "Wɔakora w'eSIM profile so yiye. Wubetumi afrɛ yɛn mmoa ma wɔagyae w'eSIM profile no yɛ adwuma bere tiaa bi na wɔasan de ama wo wɔ fon foforo so bere a wubenya bi. Ahobammɔ wom sen physical SIM a wobetumi ayi na wɔde ahyɛ fon foforo mu.",
+
         blogTitle: 'Amanyɛsɛm ne Ntease Foforo',
         blogTooltip: 'Kɔ so nya eSIM teknoloji, akwantu ho afotu, ne adwumakuw no amanyɛsɛm foforo denam yɛn nsɛm a yɛakyerɛw no so.',
         blogSubtitle: 'Kɔ so nya eSIM teknoloji ne yɛn nnwuma ho amanneɛbɔ foforo.',
@@ -820,7 +847,16 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         videosSubtitle: 'Jagororin gani don taimaka maka farawa cikin ƙanƙanin lokaci.',
         
         faqTitle: 'Tambayoyin da Aka Saba Yi',
-        loadingFaqs: 'Ana Loda Tambayoyi...',
+        faq1Question: "Menene eSIM?",
+        faq1Answer: "eSIM SIM ce ta dijital da ke ba ka damar kunna shirin salula daga mai ba da sabis ɗinka ba tare da amfani da nano-SIM na zahiri ba.",
+        faq2Question: "Yaya zan kunna eSIM dina?",
+        faq2Answer: "Kunnawa abu ne mai sauƙi. Bayan biya, za ka karɓi lambar QR. Duba shi da kyamarar wayarka a cikin saitunan salula don shigar da bayanan eSIM.",
+        faq3Question: "Shin na'urata ta dace?",
+        faq3Answer: "Yawancin sabbin wayoyin hannu daga Apple, Samsung, da Google suna goyon bayan eSIM. Yi amfani da mai duba daidaituwarmu a shafin gida don tabbatar da takamaiman samfurinka.",
+        faq4Question: "Zan iya amfani da SIM dina na zahiri da eSIM a lokaci guda?",
+        faq4Answer: "Ee, idan wayarka tana goyon bayan Dual SIM da eSIM, zaka iya amfani da SIM na zahiri da eSIM a lokaci guda, misali, ɗaya don na kanka ɗaya kuma don kasuwanci.",
+        faq5Question: "Me zai faru idan na rasa wayata?",
+        faq5Answer: "Bayanin eSIM ɗinka yana da aminci. Zaka iya tuntuɓar tallafinmu don dakatar da bayanan eSIM ɗinka na ɗan lokaci kuma a sake fitar da shi zuwa sabuwar na'ura idan ka samu. Ya fi aminci fiye da SIM na zahiri wanda za'a iya cirewa a yi amfani da shi a wata wayar.",
         
         blogTitle: 'Sabbin Labarai & Fahimta',
         blogTooltip: 'Kasance da sabuntawa tare da sabbin fasahar eSIM, shawarwarin tafiye-tafiye, da labaran kamfani ta hanyar labaranmu.',
@@ -1053,8 +1089,17 @@ export const translations: { [key: string]: { [key: string]: string } } = {
 
         // FAQ Section
         faqTitle: 'Questions Dem Dey Ask Plenty',
-        loadingFaqs: 'Loading FAQs...',
-        
+        faq1Question: "Wetin be eSIM?",
+        faq1Answer: "eSIM na digital SIM wey go let you activate your cellular plan from your network people without you go need physical nano-SIM.",
+        faq2Question: "How I go activate my eSIM?",
+        faq2Answer: "To activate am, e simple. After you pay, you go get QR code. Use your phone camera scan am for your cellular settings inside to install de eSIM profile.",
+        faq3Question: "My device fit am?",
+        faq3Answer: "Most of de new smartphones from Apple, Samsung, and Google support eSIM. Use our compatibility checker for de homepage to check your own model.",
+        faq4Question: "I fit use my normal SIM and eSIM for de same time?",
+        faq4Answer: "Yes, if your phone support Dual SIM with eSIM, you fit use both your normal SIM and de eSIM for de same time, for example, one for your personal use and one for business.",
+        faq5Question: "Wetin go happen if I lost my phone?",
+        faq5Answer: "Your eSIM profile dey secure. You fit contact our support make dem pause your eSIM profile for some time and give you new one for new device when you get am. E secure pass physical SIM wey person fit just comot am use am for another phone.",
+
         // Blog Section
         blogTitle: 'Fresh Gists & News',
         blogTooltip: 'Stay updated with the latest in eSIM technology, travel tips, and company news through our articles.',

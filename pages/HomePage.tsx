@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { Page, FaqItem, Bundle } from '../types';
-import { generateFaqs } from '../services/geminiService';
 import FaqAccordion from '../components/FaqAccordion';
 import HeroSlider from '../components/HeroSlider';
 import DeviceIcon from '../components/icons/DeviceIcon';
@@ -30,21 +29,9 @@ interface HomePageProps {
 }
 
 const HomePage: React.FC<HomePageProps> = ({ setPage, setSelectedBundle, openCompatModal, openContactModal, openVideoModal }) => {
-    const [faqs, setFaqs] = useState<FaqItem[]>([]);
-    const [isLoadingFaqs, setIsLoadingFaqs] = useState(true);
     const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
     const [isNotificationVisible, setIsNotificationVisible] = useState(true);
     const { t } = useTranslation();
-
-    useEffect(() => {
-        const fetchFaqs = async () => {
-            setIsLoadingFaqs(true);
-            const generatedFaqs = await generateFaqs();
-            setFaqs(generatedFaqs);
-            setIsLoadingFaqs(false);
-        };
-        fetchFaqs();
-    }, []);
 
     const stepData = [
         { icon: DeviceIcon, titleKey: 'stepCompatTitle', descriptionKey: 'stepCompatDesc' },
@@ -55,6 +42,19 @@ const HomePage: React.FC<HomePageProps> = ({ setPage, setSelectedBundle, openCom
         { icon: ActivateIcon, titleKey: 'stepProcessedTitle', descriptionKey: 'stepProcessedDesc' },
     ];
     const steps = stepData.map(step => ({ ...step, title: t(step.titleKey), description: t(step.descriptionKey) }));
+
+    const faqData = [
+        { questionKey: 'faq1Question', answerKey: 'faq1Answer' },
+        { questionKey: 'faq2Question', answerKey: 'faq2Answer' },
+        { questionKey: 'faq3Question', answerKey: 'faq3Answer' },
+        { questionKey: 'faq4Question', answerKey: 'faq4Answer' },
+        { questionKey: 'faq5Question', answerKey: 'faq5Answer' },
+    ];
+    
+    const faqs: FaqItem[] = faqData.map(item => ({
+        question: t(item.questionKey),
+        answer: t(item.answerKey),
+    }));
 
     return (
         <div className="flex flex-col h-full w-full overflow-x-hidden pt-16">
@@ -139,14 +139,7 @@ const HomePage: React.FC<HomePageProps> = ({ setPage, setSelectedBundle, openCom
                 <section id="faq" className="w-full bg-slate-100 dark:bg-slate-800 py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
                     <div className="max-w-3xl mx-auto">
                         <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12">{t('faqTitle')}</h2>
-                        {isLoadingFaqs ? (
-                            <div className="text-center">
-                                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto"></div>
-                                <p className="mt-4 text-slate-500">{t('loadingFaqs')}</p>
-                            </div>
-                        ) : (
-                            <FaqAccordion items={faqs} />
-                        )}
+                        <FaqAccordion items={faqs} />
                     </div>
                 </section>
 
