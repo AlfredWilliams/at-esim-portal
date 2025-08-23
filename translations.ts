@@ -1,5 +1,6 @@
 
 
+
 export const translations: { [key: string]: { [key: string]: string } } = {
     en: {
         // Header & Nav
@@ -279,6 +280,12 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         chatOnWhatsApp: 'Chat on WhatsApp',
         callUs: 'Call Us',
         close: 'Close',
+
+        // Cookie Banner
+        cookieBannerTitle: 'We Value Your Privacy',
+        cookieBannerBody: 'We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. By clicking "Accept All", you consent to our use of cookies.',
+        cookieAccept: 'Accept All',
+        cookieDecline: 'Decline',
     },
     fr: {
         navHowItWorks: 'Comment ça marche',
@@ -541,6 +548,12 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         chatOnWhatsApp: 'Discuter sur WhatsApp',
         callUs: 'Appelez-nous',
         close: 'Fermer',
+
+        // Cookie Banner
+        cookieBannerTitle: 'Nous respectons votre vie privée',
+        cookieBannerBody: 'Nous utilisons des cookies pour améliorer votre expérience de navigation, diffuser des publicités ou des contenus personnalisés et analyser notre trafic. En cliquant sur "Tout accepter", vous consentez à notre utilisation des cookies.',
+        cookieAccept: 'Tout accepter',
+        cookieDecline: 'Refuser',
     },
     tw: {
         navHowItWorks: 'Sɛnea ɛyɛ adwuma',
@@ -775,6 +788,12 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         chatOnWhatsApp: 'Chat wɔ WhatsApp so',
         callUs: 'Frɛ yɛn',
         price: 'Boɔ',
+
+        // Cookie Banner
+        cookieBannerTitle: 'Yɛbu Wo Ahintasɛm',
+        cookieBannerBody: 'Yɛde cookies di dwuma de ma w\'intanɛt so nhwehwɛmu yɛ mmerɛw, yɛde nsɛm a yɛayɛ ama wo pɔtee ma, na yɛhwɛ yɛn traffic mu. Sɛ wumia "Gye Tom Nyinaa" a, ɛkyerɛ sɛ wopene yɛn cookies a yɛde di dwuma no so.',
+        cookieAccept: 'Gye Tom Nyinaa',
+        cookieDecline: 'Po',
     },
     ha: {
         navHowItWorks: 'Yadda Yake Aiki',
@@ -1009,6 +1028,12 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         chatOnWhatsApp: 'Yi hira a WhatsApp',
         callUs: 'Kira Mu',
         price: 'Farashi',
+
+        // Cookie Banner
+        cookieBannerTitle: 'Muna Daraja Sirrinka',
+        cookieBannerBody: 'Muna amfani da kukis don inganta kwarewar bincikenka, bayar da tallace-tallace ko abun ciki na musamman, da kuma nazarin zirga-zirgarmu. Ta danna "Karɓi Duka", ka amince da amfani da kukis ɗinmu.',
+        cookieAccept: 'Karɓi Duka',
+        cookieDecline: 'Ki',
     },
     gp: {
         // Header & Nav
@@ -1288,5 +1313,11 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         chatOnWhatsApp: 'Chat on WhatsApp',
         callUs: 'Call Us',
         close: 'Close',
+
+        // Cookie Banner
+        cookieBannerTitle: 'Your Privacy Matter to We',
+        cookieBannerBody: 'We dey use cookies to make your browsing sweet, show you correct ads or content, and check our traffic. If you click "Accept All", e mean say you gree make we use cookies.',
+        cookieAccept: 'Accept All',
+        cookieDecline: 'Decline',
     },
 };

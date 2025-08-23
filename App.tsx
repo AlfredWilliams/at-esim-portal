@@ -1,5 +1,6 @@
 
 
+
 import React, { useState } from 'react';
 import { Page, Bundle } from './types';
 import Header from './components/Header';
@@ -15,6 +16,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import WhatsappIcon from './components/icons/WhatsappIcon';
 import PhoneIcon from './components/icons/PhoneIcon';
 import VideoSection from './components/VideoSection';
+import CookieConsentBanner from './components/CookieConsentBanner';
 
 const AppContent: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<Page>('home');
@@ -23,6 +25,12 @@ const AppContent: React.FC = () => {
     const [isTestDeviceModalOpen, setIsTestDeviceModalOpen] = useState(false);
     const [isContactModalOpen, setIsContactModalOpen] = useState(false);
     const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+    const [cookieConsent, setCookieConsent] = useState<string | null>(() => {
+        if (typeof window !== 'undefined' && window.localStorage) {
+            return window.localStorage.getItem('cookieConsent');
+        }
+        return null;
+    });
     const { t } = useTranslation();
 
     const handleProceedToRegistration = () => {
@@ -38,6 +46,16 @@ const AppContent: React.FC = () => {
     const openCompatModal = () => setIsCompatModalOpen(true);
     const openContactModal = () => setIsContactModalOpen(true);
     const openVideoModal = () => setIsVideoModalOpen(true);
+
+    const handleAcceptCookies = () => {
+        localStorage.setItem('cookieConsent', 'accepted');
+        setCookieConsent('accepted');
+    };
+
+    const handleDeclineCookies = () => {
+        localStorage.setItem('cookieConsent', 'declined');
+        setCookieConsent('declined');
+    };
 
     const renderPage = () => {
         switch (currentPage) {
@@ -125,6 +143,10 @@ const AppContent: React.FC = () => {
                     <VideoSection />
                 </div>
             </Modal>
+
+            {!cookieConsent && (
+                <CookieConsentBanner onAccept={handleAcceptCookies} onDecline={handleDeclineCookies} />
+            )}
         </main>
     );
 };
