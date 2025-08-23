@@ -263,10 +263,10 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         contactSupport: 'Contact Support',
 
         // Compatibility Modal
-        compatModalTitle: 'Is Your Device Compatible?',
-        compatModalBody: "Before proceeding, please ensure your smartphone supports eSIM technology. Most modern devices do, but it's always best to check first.",
+        compatModalTitle: 'For Existing AT Subscribers Only',
+        compatModalBody: 'This eSIM request process is strictly for existing AT subscribers.',
         testDeviceCompatibility: 'Test Device Compatibility',
-        compatModalConfirm: "Yes, it's compatible",
+        compatModalConfirm: "Yes, let's continue",
 
         // Test Device Modal
         testDeviceModalTitle: 'Test Device Compatibility',
@@ -526,10 +526,10 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         havingTrouble: 'Des problèmes ?',
         contactSupport: 'Contacter le support',
 
-        compatModalTitle: 'Votre appareil est-il compatible ?',
-        compatModalBody: 'Avant de continuer, veuillez vous assurer que votre smartphone prend en charge la technologie eSIM. La plupart des appareils modernes le font, mais il est toujours préférable de vérifier d\'abord.',
+        compatModalTitle: 'Pour les abonnés AT existants uniquement',
+        compatModalBody: 'Ce processus de demande d\'eSIM est strictement réservé aux abonnés AT existants.',
         testDeviceCompatibility: 'Tester la compatibilité de l\'appareil',
-        compatModalConfirm: 'Oui, il est compatible',
+        compatModalConfirm: 'Oui, continuons',
         
         // Test Device Modal
         testDeviceModalTitle: 'Tester la compatibilité de l\'appareil',
@@ -761,10 +761,10 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         havingTrouble: 'Woanya ɔhaw?',
         contactSupport: 'Frɛ Mmoa',
 
-        compatModalTitle: 'Wo Fon no ɛne eSIM hyia?',
-        compatModalBody: 'Ansa na yɛbɛtoa so no, yɛsrɛ wo hwɛ yie sɛ wo smartphone no tumi fa eSIM teknɔlɔgyi anaa. Nnɛyi fon dodow no ara yɛ saa, nanso ɛyɛ papa sɛ bere biara wobɛdi kan ahwɛ.',
+        compatModalTitle: 'Ma AT Subscriber a Wɔwɔ Hɔ Deda Nko ara',
+        compatModalBody: 'Saa eSIM abisadeɛ yi yɛ ma AT subscriber a ɔwɔ hɔ dedaw nko ara.',
         testDeviceCompatibility: 'Sɔ wo fon no hwɛ',
-        compatModalConfirm: 'Aane, ɛne no hyia',
+        compatModalConfirm: 'Aane, ma yɛntoa so',
         testDeviceModalTitle: 'Sɔ wo fon no hwɛ',
         testDeviceModalBody: 'Fa wo fon no kamera skan QR code a ɛwɔ ase ha yi. Sɛ ɛka kyerɛ wo sɛ fa mobile plan foforo ka ho a, ɛkyerɛ sɛ wo fon no tumi fa eSIM na wɔntoo mu.',
         testDeviceModalScanText: 'Skan hwɛ sɛ wo fon no wɔtoo mu/wɔammoa mu',
@@ -995,10 +995,10 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         havingTrouble: 'Kuna fuskantar matsala?',
         contactSupport: 'Tuntuɓi Taimako',
 
-        compatModalTitle: 'Shin Na\'urarka ta dace?',
-        compatModalBody: 'Kafin a ci gaba, da fatan za a tabbatar wayarka ta hannu tana goyon bayan fasahar eSIM. Yawancin na\'urorin zamani suna yi, amma yana da kyau a duba tukuna.',
+        compatModalTitle: 'Don Masu Biyan Kuɗin AT da suke akwai kaɗai',
+        compatModalBody: 'Wannan tsarin neman eSIM na musamman ne ga waɗanda suka riga suka zama masu biyan kuɗin AT.',
         testDeviceCompatibility: 'Gwada Daidaituwar Na\'ura',
-        compatModalConfirm: 'I, ya dace',
+        compatModalConfirm: "Ee, mu ci gaba",
         testDeviceModalTitle: 'Gwada Daidaituwar Na\'ura',
         testDeviceModalBody: 'Duba lambar QR da ke ƙasa da kyamarar wayarka. Idan an sa ka ƙara tsarin salula/wayar hannu, da alama na\'urarka ta dace da eSIM kuma a buɗe take.',
         testDeviceModalScanText: 'Duba don ganin ko na\'urarka a kulle take/a buɗe take',
@@ -1272,10 +1272,10 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         contactSupport: 'Contact Support',
 
         // Compatibility Modal
-        compatModalTitle: 'Your Phone Fit?',
-        compatModalBody: "Before you move on, abeg make sure your smartphone fit handle this eSIM business. Most of de new phones dey fit am, but e good make you check first.",
+        compatModalTitle: 'For People Wey Dey Use AT Before Before Pɛ',
+        compatModalBody: 'This eSIM order process na strictly for people wey be AT subscriber already.',
         testDeviceCompatibility: 'Test Your Phone See',
-        compatModalConfirm: "Yeah, e fit",
+        compatModalConfirm: "Yes, make we continue",
 
         // Test Device Modal
         testDeviceModalTitle: 'Test Your Phone See',

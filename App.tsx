@@ -1,4 +1,5 @@
 
+
 import React, { useState } from 'react';
 import { Page, Bundle } from './types';
 import Header from './components/Header';
@@ -71,10 +72,7 @@ const AppContent: React.FC = () => {
                 <p className="text-slate-600 dark:text-slate-300 mb-6">
                     {t('compatModalBody')}
                 </p>
-                <div className="flex flex-col sm:flex-row sm:justify-end sm:space-x-4 space-y-2 sm:space-y-0">
-                    <Button variant="secondary" onClick={handleOpenTestModal}>
-                        {t('testDeviceCompatibility')}
-                    </Button>
+                <div className="flex justify-end">
                     <Button onClick={handleProceedToRegistration}>
                         {t('compatModalConfirm')}
                     </Button>
