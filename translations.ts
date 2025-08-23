@@ -1,4 +1,5 @@
 
+
 export const translations: { [key: string]: { [key: string]: string } } = {
     en: {
         // Header & Nav
@@ -172,6 +173,7 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         errorAtMoneyBalanceRequired: 'AT Money balance is required.',
         errorInvalidOtp: 'Invalid OTP. Please try again.',
         errorOtpMethodRequired: 'Please select a verification method.',
+        errorPhoneNumberDuplicate: 'This phone number has already been used in another field.',
         otpResent: 'A new OTP has been sent.',
         cameraModalTitle: 'ID Verification',
         retakeButton: 'Retake',
@@ -430,6 +432,7 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         errorAtMoneyBalanceRequired: 'Le solde AT Money est requis.',
         errorInvalidOtp: 'OTP invalide. Veuillez réessayer.',
         errorOtpMethodRequired: 'Veuillez sélectionner une méthode de vérification.',
+        errorPhoneNumberDuplicate: 'Ce numéro de téléphone a déjà été utilisé dans un autre champ.',
         otpResent: 'Un nouvel OTP a été envoyé.',
         cameraModalTitle: 'Vérification d\'identité',
         retakeButton: 'Reprendre',
@@ -683,6 +686,7 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         errorAtMoneyBalanceRequired: 'AT sika a ɛwɔ so no ho hia.',
         errorInvalidOtp: 'OTP no nni fata. Yɛsrɛ wo, san bɔ mmɔden.',
         errorOtpMethodRequired: 'Yɛsrɛ wo, paw nnyinasoɔ kwan bi.',
+        errorPhoneNumberDuplicate: 'Wɔde saa telefon nɔma yi adi dwuma wɔ beae foforo dedaw.',
         otpResent: 'Yɛasan amena OTP foforo.',
         cameraModalTitle: 'ID mu nhwehwɛmu',
         retakeButton: 'San Twa',
@@ -907,6 +911,7 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         errorAtMoneyBalanceRequired: "Ana buƙatar ma'aunin kuɗin AT.",
         errorInvalidOtp: 'OTP ba daidai ba. Da fatan za a sake gwadawa.',
         errorOtpMethodRequired: 'Da fatan za a zaɓi hanyar tabbatarwa.',
+        errorPhoneNumberDuplicate: 'An riga an yi amfani da wannan lambar wayar a wani filin.',
         otpResent: 'An sake aika sabon OTP.',
         cameraModalTitle: 'Tabbatar da Shaida',
         retakeButton: 'Sake Ɗauka',
@@ -971,7 +976,7 @@ export const translations: { [key: string]: { [key: string]: string } } = {
     },
     gp: {
         // Header & Nav
-        navHowItWorks: 'how eSIM dey Work',
+        navHowItWorks: 'Sɛnia ɛkɔ',
         navOffers: 'Akwaaba Deals',
         navCompatibility: 'If Your Fon Fit',
         navVideos: 'Watch Video See',
@@ -994,7 +999,7 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         existingSubscriberNotice: 'This site be strictly for AT people wey dey already. E no be for new person. Medaase.',
 
         // How It Works Section
-        howItWorksTitle: 'How eSIM Dey Work',
+        howItWorksTitle: 'Sɛnia ɛkɔ',
         howItWorksTooltip: 'This side go show you de simple 6 steps you go take get your eSIM, from you go check if your phone fit am to de time you go receive am for your email.',
         stepCompatTitle: 'Your Fon Fit?',
         stepCompatDesc: 'Check if your smartphone fit handle de new eSIM technology.',
@@ -1141,6 +1146,7 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         errorAtMoneyBalanceRequired: 'AT Money balance dey required.',
         errorInvalidOtp: 'Invalid OTP. Abeg try again.',
         errorOtpMethodRequired: 'Abeg select a verification method.',
+        errorPhoneNumberDuplicate: 'Dem don use this phone number for another place already.',
         otpResent: 'Dem send new OTP.',
         cameraModalTitle: 'ID Verification',
         retakeButton: 'Retake',

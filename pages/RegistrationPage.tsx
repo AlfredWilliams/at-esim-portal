@@ -301,11 +301,26 @@ const RegistrationPage: React.FC<RegistrationPageProps> = ({ setPage, selectedBu
             if (formData.nextOfKin && /[^a-zA-Z\s]/.test(formData.nextOfKin)) {
                 newErrors.nextOfKin = t('errorNextOfKinInvalid');
             }
+
+            // Duplicate check for alternativeNumber
+            if (formData.alternativeNumber && formData.alternativeNumber === formData.atNumber) {
+                newErrors.alternativeNumber = t('errorPhoneNumberDuplicate');
+            }
         }
         if (currentStep === 4) {
             if (!formData.freqDialedNumber1) newErrors.freqDialedNumber1 = t('errorFreqDialed1Required');
             if (!formData.freqDialedNumber2) newErrors.freqDialedNumber2 = t('errorFreqDialed2Required');
             if (!formData.atMoneyBalance) newErrors.atMoneyBalance = t('errorAtMoneyBalanceRequired');
+
+            // Duplicate check for freqDialedNumber1
+            if (formData.freqDialedNumber1 && (formData.freqDialedNumber1 === formData.atNumber || formData.freqDialedNumber1 === formData.alternativeNumber)) {
+                newErrors.freqDialedNumber1 = t('errorPhoneNumberDuplicate');
+            }
+            
+            // Duplicate check for freqDialedNumber2
+            if (formData.freqDialedNumber2 && (formData.freqDialedNumber2 === formData.atNumber || formData.freqDialedNumber2 === formData.alternativeNumber || formData.freqDialedNumber2 === formData.freqDialedNumber1)) {
+                newErrors.freqDialedNumber2 = t('errorPhoneNumberDuplicate');
+            }
         }
         if (currentStep === 6) {
             if (!otpMethod) newErrors.otpMethod = t('errorOtpMethodRequired');
@@ -566,7 +581,7 @@ const RegistrationPage: React.FC<RegistrationPageProps> = ({ setPage, selectedBu
                 return (
                      <div className="space-y-6">
                         <InputField label={t('emailAddress')} id="email" type="email" value={formData.email} onChange={handleChange} onBlur={handleBlur} error={errors.email} required />
-                        <InputField label={t('altPhoneNumber')} id="alternativeNumber" type="number" value={formData.alternativeNumber} onChange={handleChange} error={errors.alternativeNumber} required />
+                        <InputField label={t('altPhoneNumber')} id="alternativeNumber" type="tel" value={formData.alternativeNumber} onChange={handleChange} error={errors.alternativeNumber} required maxLength={10} />
                         <InputField label={t('nextOfKin')} id="nextOfKin" value={formData.nextOfKin} onChange={handleChange} error={errors.nextOfKin} maxLength={50} />
                          <div>
                             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{t('customerType')}</label>
