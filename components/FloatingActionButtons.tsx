@@ -16,13 +16,13 @@ const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({ onContact
     const [isNewsletterModalOpen, setIsNewsletterModalOpen] = useState(false);
     const { t } = useTranslation();
 
-    const fabBaseClasses = "group flex items-center justify-center bg-red-600 text-white font-semibold rounded-full shadow-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-slate-50 dark:focus:ring-offset-slate-900 transition-all duration-300 ease-in-out h-14 w-14 hover:w-auto hover:pr-5 hover:pl-4";
-    const iconClasses = "h-7 w-7 transition-transform group-hover:scale-110";
-    const textClasses = "hidden group-hover:inline-block ml-3 whitespace-nowrap text-sm";
+    const fabBaseClasses = "group flex items-center justify-center bg-red-600 text-white font-semibold rounded-l-full shadow-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-slate-50 dark:focus:ring-offset-slate-900 transition-all duration-300 ease-in-out h-14 w-14 hover:w-auto hover:px-5";
+    const iconClasses = "h-7 w-7 transition-transform group-hover:scale-110 flex-shrink-0";
+    const textClasses = "hidden group-hover:inline-block ml-2 whitespace-nowrap text-sm";
 
     return (
         <>
-            <div className="w-max flex flex-col items-end gap-4 fixed bottom-6 right-6 md:bottom-8 md:right-8 z-40">
+            <div className="flex flex-col items-end gap-4 fixed bottom-8 right-0 z-40">
                 <button
                     onClick={onContactClick}
                     className={fabBaseClasses}
