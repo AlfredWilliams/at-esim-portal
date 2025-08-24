@@ -8,6 +8,7 @@ const languages = [
     { code: 'fr', name: 'Français' },
     { code: 'tw', name: 'Twi' },
     { code: 'ha', name: 'Hausa' },
+    { code: 'ga', name: 'Ga' },
     { code: 'gp', name: 'Pidgin' },
 ];
 
