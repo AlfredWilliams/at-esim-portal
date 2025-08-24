@@ -1,5 +1,6 @@
 
 
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Page, RegistrationFormData, Bundle } from '../types';
 import Button from '../components/Button';
@@ -11,7 +12,9 @@ import { useTranslation } from '../contexts/LanguageContext';
 import Tooltip from '../components/Tooltip';
 import InfoIcon from '../components/icons/InfoIcon';
 import CheckCircleIcon from '../components/icons/CheckCircleIcon';
+import XCircleIcon from '../components/icons/XCircleIcon';
 import { submitRegistration } from '../services/api.js';
+import { validateSelfieWithId } from '../services/geminiService';
 
 interface RegistrationPageProps {
     setPage: (page: Page) => void;
@@ -28,32 +31,6 @@ const bundleData: Bundle[] = [
 const stepKeys = ["regStepPersonal", "regStepIdentity", "regStepContact", "regStepSecurity", "regStepReview", "regStepVerificationMethod"];
 
 // Icon components defined locally to avoid creating new files
-const FaceOutlineIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg
-    className={className}
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth="1.5"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z
-         M4.501 20.118a7.5 7.5 0 0114.998 0
-         A17.933 17.933 0 0112 21.75
-         c-2.676 0-5.264-.584-7.499-1.632z"
-    />
-  </svg>
-);
-
-const IdCardOutlineIcon: React.FC<{ className?: string }> = ({ className }) => (
-    <svg className={className} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 21.75z" />
-    </svg>
-);
-
 const MailIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
@@ -66,17 +43,7 @@ const SmsIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
-const CaptureProgress: React.FC<{ step: number, totalSteps: number }> = ({ step, totalSteps }) => {
-    const progress = (step / totalSteps) * 100;
-    return (
-        <div className="w-full bg-slate-600 rounded-full h-2">
-            <div className="bg-green-500 h-2 rounded-full transition-all duration-500" style={{ width: `${progress}%` }}></div>
-        </div>
-    );
-};
-
-
-type CameraStep = 'GUIDANCE_FACE' | 'GUIDANCE_ID' | 'GUIDANCE_LIVENESS' | 'CAPTURING' | 'PREVIEW';
+type CameraStep = 'GUIDANCE' | 'VALIDATING' | 'SUCCESS' | 'FAILURE';
 type OtpMethod = 'sms' | 'email' | '';
 
 const RegistrationPage: React.FC<RegistrationPageProps> = ({ setPage, selectedBundle, setSelectedBundle }) => {
@@ -102,12 +69,11 @@ const RegistrationPage: React.FC<RegistrationPageProps> = ({ setPage, selectedBu
 
     // Camera states and refs
     const [isCameraModalOpen, setIsCameraModalOpen] = useState(false);
+    const [cameraStep, setCameraStep] = useState<CameraStep>('GUIDANCE');
     const [capturedImage, setCapturedImage] = useState<string | null>(null);
+    const [validationFeedback, setValidationFeedback] = useState('');
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [guidanceMessage, setGuidanceMessage] = useState('');
-    const [cameraStep, setCameraStep] = useState<CameraStep>('GUIDANCE_FACE');
-    const [livenessAction, setLivenessAction] = useState<'blink' | 'smile'>('blink');
 
     const steps = stepKeys.map(key => t(key));
 
@@ -184,50 +150,6 @@ const RegistrationPage: React.FC<RegistrationPageProps> = ({ setPage, selectedBu
         };
     }, [isCameraModalOpen]);
 
-    // Effect to reset camera state when modal opens
-    useEffect(() => {
-        if (isCameraModalOpen) {
-            setCameraStep('GUIDANCE_FACE');
-            setCapturedImage(null);
-            setLivenessAction(Math.random() > 0.5 ? 'blink' : 'smile');
-        }
-    }, [isCameraModalOpen]);
-
-    // Effect to run the camera guidance sequence
-    useEffect(() => {
-        if (!isCameraModalOpen || cameraStep === 'PREVIEW') return;
-
-        let timeoutId: number;
-
-        const advanceStep = (nextStep: CameraStep, delay: number) => {
-            timeoutId = window.setTimeout(() => setCameraStep(nextStep), delay);
-        };
-
-        switch (cameraStep) {
-            case 'GUIDANCE_FACE':
-                setGuidanceMessage(t('cameraGuideFitFace'));
-                advanceStep('GUIDANCE_ID', 3000);
-                break;
-            case 'GUIDANCE_ID':
-                setGuidanceMessage(t('cameraGuideFitId'));
-                advanceStep('GUIDANCE_LIVENESS', 3000);
-                break;
-            case 'GUIDANCE_LIVENESS':
-                const actionKey = livenessAction === 'blink' ? 'cameraGuideLivenessBlink' : 'cameraGuideLivenessSmile';
-                setGuidanceMessage(t(actionKey));
-                advanceStep('CAPTURING', 2500);
-                break;
-            case 'CAPTURING':
-                setGuidanceMessage(t('cameraGuideSuccess'));
-                handleCapture();
-                // Short delay to show "Capturing..." message then move to preview
-                timeoutId = window.setTimeout(() => setCameraStep('PREVIEW'), 1000);
-                break;
-        }
-
-        return () => clearTimeout(timeoutId);
-
-    }, [isCameraModalOpen, cameraStep, livenessAction, t]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { id, value } = e.target;
@@ -435,10 +357,13 @@ const RegistrationPage: React.FC<RegistrationPageProps> = ({ setPage, selectedBu
     };
 
     const handleOpenCam = () => {
+        setCameraStep('GUIDANCE');
+        setCapturedImage(null);
+        setValidationFeedback('');
         setIsCameraModalOpen(true);
     };
-
-    const handleCapture = () => {
+    
+    const handleCaptureAndValidate = async () => {
         if (videoRef.current && canvasRef.current) {
             const video = videoRef.current;
             const canvas = canvasRef.current;
@@ -446,29 +371,42 @@ const RegistrationPage: React.FC<RegistrationPageProps> = ({ setPage, selectedBu
             canvas.height = video.videoHeight;
             const context = canvas.getContext('2d');
             if (context) {
+                // Flip the image horizontally for a mirror effect
                 context.translate(video.videoWidth, 0);
                 context.scale(-1, 1);
-                context.filter = 'contrast(1.2) brightness(1.1) saturate(1.1)';
                 context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
                 const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
                 setCapturedImage(dataUrl);
-                context.filter = 'none';
-                context.setTransform(1, 0, 0, 1, 0, 0);
+                context.setTransform(1, 0, 0, 1, 0, 0); // Reset transform
+
+                setCameraStep('VALIDATING');
+                
+                const base64String = dataUrl.split(',')[1];
+                const result = await validateSelfieWithId(base64String);
+
+                if (result.isGoodQuality) {
+                    setCameraStep('SUCCESS');
+                    setTimeout(() => {
+                        handleAcceptPicture(dataUrl);
+                    }, 1500);
+                } else {
+                    setValidationFeedback(result.feedback);
+                    setCameraStep('FAILURE');
+                }
             }
         }
     };
     
     const handleRetake = () => {
         setCapturedImage(null);
-        setCameraStep('GUIDANCE_FACE');
+        setValidationFeedback('');
+        setCameraStep('GUIDANCE');
     };
 
-    const handleAcceptPicture = () => {
-        if (capturedImage) {
-            const imageFile = dataURLtoFile(capturedImage, 'selfie-with-id.jpg');
-            setFormData(prev => ({ ...prev, selfieWithId: imageFile }));
-            setIsCameraModalOpen(false);
-        }
+    const handleAcceptPicture = (dataUrl: string) => {
+        const imageFile = dataURLtoFile(dataUrl, 'selfie-with-id.jpg');
+        setFormData(prev => ({ ...prev, selfieWithId: imageFile }));
+        setIsCameraModalOpen(false);
     };
 
     const maskEmail = (email: string) => {
@@ -785,66 +723,68 @@ const RegistrationPage: React.FC<RegistrationPageProps> = ({ setPage, selectedBu
     };
     
     const renderCameraContent = () => {
-        const faceDetected = cameraStep !== 'GUIDANCE_FACE';
-        const idDetected = cameraStep !== 'GUIDANCE_FACE' && cameraStep !== 'GUIDANCE_ID';
-        const livenessDetected = idDetected && cameraStep !== 'GUIDANCE_LIVENESS';
-
-        let progressStep = 0;
-        if (cameraStep === 'GUIDANCE_ID') progressStep = 1;
-        if (cameraStep === 'GUIDANCE_LIVENESS') progressStep = 2;
-        if (cameraStep === 'CAPTURING') progressStep = 3;
-        if (cameraStep === 'PREVIEW') progressStep = 4;
-
-        const guidanceIcon = () => {
-            if (!faceDetected) return <FaceOutlineIcon className="h-8 w-8 text-slate-300" />;
-            if (!idDetected) return <IdCardOutlineIcon className="h-8 w-8 text-slate-300" />;
-            return <CheckCircleIcon className="h-8 w-8 text-green-400" />;
-        };
-
-        if (cameraStep === 'PREVIEW' && capturedImage) {
-            return (
-                <div className="flex flex-col items-center gap-4 h-full">
-                    <h2 className="text-2xl font-bold text-center text-slate-800 dark:text-white">{t('cameraPreviewTitle')}</h2>
-                    <p className="text-sm text-center text-slate-500 dark:text-slate-400 mb-2">{t('cameraPreviewSubtitle')}</p>
-                    <img src={capturedImage} alt="Captured selfie" className="rounded-lg w-full max-w-sm" />
-                    <div className="flex w-full justify-center gap-4 mt-4">
-                        <Button variant="secondary" onClick={handleRetake}>{t('retakeButton')}</Button>
-                        <Button onClick={handleAcceptPicture}>{t('usePictureButton')}</Button>
-                    </div>
-                </div>
-            );
-        }
-
-        return (
-            <div className="flex flex-col items-center gap-4 h-full">
-                <canvas ref={canvasRef} className="hidden"></canvas>
-                <div className="relative w-full max-w-sm aspect-[3/4] overflow-hidden rounded-lg bg-slate-900">
-                    <video ref={videoRef} autoPlay playsInline muted className="absolute top-0 left-0 w-full h-full object-cover transform -scale-x-100"></video>
-                    <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice">
-                        <defs>
-                            <mask id="guidance-mask">
-                                <rect width="300" height="400" fill="white" />
-                                <ellipse cx="150" cy="140" rx="70" ry="90" fill="black" />
-                                <rect x="75" y="280" width="150" height="95" rx="10" fill="black" />
-                            </mask>
-                        </defs>
-                        <rect width="300" height="400" fill="rgba(0,0,0,0.7)" mask="url(#guidance-mask)" />
-                        <ellipse cx="150" cy="140" rx="70" ry="90" fill="none" stroke={faceDetected ? '#4ade80' : '#f87171'} strokeWidth="4" className="transition-all duration-500" />
-                        <rect x="75" y="280" width="150" height="95" rx="10" fill="none" stroke={idDetected ? '#4ade80' : '#f87171'} strokeWidth="4" className="transition-all duration-500" />
-                    </svg>
-                </div>
-                <div className="w-full max-w-sm p-4 bg-slate-700/50 rounded-lg text-center backdrop-blur-sm">
-                    <div className="flex items-center justify-center gap-4">
-                        {guidanceIcon()}
-                        <p className="text-white font-medium text-lg">{guidanceMessage}</p>
-                    </div>
-                    <div className="mt-4">
-                        <CaptureProgress step={progressStep} totalSteps={4} />
-                    </div>
-                </div>
+        const renderOverlay = () => (
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
+                <svg className="w-full h-full" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice">
+                    <defs>
+                        <mask id="guidance-mask">
+                            <rect width="300" height="400" fill="white" />
+                            <ellipse cx="150" cy="140" rx="70" ry="90" fill="black" />
+                            <rect x="75" y="280" width="150" height="95" rx="10" fill="black" />
+                        </mask>
+                    </defs>
+                    <rect width="300" height="400" fill="rgba(0,0,0,0.7)" mask="url(#guidance-mask)" />
+                    <ellipse cx="150" cy="140" rx="70" ry="90" fill="none" stroke="white" strokeWidth="3" strokeDasharray="10 5" />
+                    <rect x="75" y="280" width="150" height="95" rx="10" fill="none" stroke="white" strokeWidth="3" strokeDasharray="10 5" />
+                </svg>
             </div>
         );
+
+        switch (cameraStep) {
+            case 'GUIDANCE':
+                return (
+                    <div className="relative w-full h-full flex flex-col">
+                        <div className="relative flex-grow w-full max-w-sm mx-auto aspect-[3/4] overflow-hidden rounded-lg bg-slate-900">
+                           <video ref={videoRef} autoPlay playsInline muted className="absolute top-0 left-0 w-full h-full object-cover transform -scale-x-100"></video>
+                           {renderOverlay()}
+                        </div>
+                        <div className="flex-shrink-0 p-4 text-center">
+                            <p className="text-white font-medium text-lg mb-4">{t('cameraGuideFitFace')}</p>
+                            <Button size="lg" onClick={handleCaptureAndValidate}>{t('captureButton')}</Button>
+                        </div>
+                    </div>
+                );
+            case 'VALIDATING':
+                return (
+                    <div className="w-full h-full flex flex-col items-center justify-center text-white">
+                         <svg className="animate-spin h-10 w-10 text-white mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <h3 className="text-2xl font-bold">{t('validatingPhotoTitle')}</h3>
+                        <p className="text-slate-300">{t('validatingPhotoSubtitle')}</p>
+                    </div>
+                );
+            case 'FAILURE':
+                 return (
+                    <div className="w-full h-full flex flex-col items-center justify-center text-white p-4">
+                        <XCircleIcon className="h-16 w-16 text-red-500 mb-4" />
+                        <h3 className="text-2xl font-bold text-center mb-2">{t('validationFailedTitle')}</h3>
+                        <p className="text-slate-300 text-center mb-6">{validationFeedback}</p>
+                        <Button variant="secondary" onClick={handleRetake}>{t('tryAgainButton')}</Button>
+                    </div>
+                );
+            case 'SUCCESS':
+                return (
+                    <div className="w-full h-full flex flex-col items-center justify-center text-white">
+                        <CheckCircleIcon className="h-16 w-16 text-green-500 mb-4" />
+                        <h3 className="text-2xl font-bold">{t('photoVerifiedTitle')}</h3>
+                    </div>
+                );
+            default: return null;
+        }
     };
+
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-900 p-4 pt-24">
@@ -944,9 +884,9 @@ const RegistrationPage: React.FC<RegistrationPageProps> = ({ setPage, selectedBu
                 </div>
             </Modal>
             
-            {/* The Modal component itself adds padding, so we remove it with negative margins here for a true fullscreen feel */}
-            <Modal isOpen={isCameraModalOpen} onClose={() => setIsCameraModalOpen(false)} title="" size="fullscreen">
-                <div className="!p-0 !-m-6 bg-slate-800 dark:bg-slate-900 h-full rounded-lg">
+            <Modal isOpen={isCameraModalOpen} onClose={() => setIsCameraModalOpen(false)} title={t('cameraModalTitle')} size="fullscreen">
+                <canvas ref={canvasRef} className="hidden"></canvas>
+                <div className="!p-0 !-m-6 bg-slate-800 dark:bg-slate-900 h-full rounded-lg flex items-center justify-center">
                     {renderCameraContent()}
                 </div>
             </Modal>
