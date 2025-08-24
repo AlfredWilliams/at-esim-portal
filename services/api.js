@@ -4,78 +4,88 @@
  */
 
 /**
- * Submits the registration form data to the backend.
- * @param {import('../types').RegistrationFormData} formData - The registration form data object.
- * @returns {Promise<{success: boolean, message: string}>} A promise that resolves with the submission result.
+ * Submits the registration form data, including files, to the backend API.
+ * This function uses the FormData API to correctly handle multipart/form-data submissions,
+ * which is essential for file uploads.
+ *
+ * @param {import('../types').RegistrationFormData} formData - The registration form data object from the component's state.
+ * @returns {Promise<{success: boolean, message: string, data?: any}>} A promise that resolves with the submission result.
+ * 'success' will be true if the API call was successful (e.g., HTTP 200-299), and false otherwise.
+ * 'message' will contain a user-friendly message from the server or a generic error message.
+ * 'data' will contain the response body from the server on success.
  */
 export const submitRegistration = async (formData) => {
-  console.log('Submitting registration data to the backend:', formData);
+  // The API endpoint where the registration data will be sent.
+  // This should be replaced with your actual backend endpoint.
+  const API_ENDPOINT = '/api/register'; // Example: 'https://your-backend.com/api/register'
 
-  // This is a placeholder for your actual API endpoint.
-  const API_ENDPOINT = '/api/register';
+  console.log('Preparing to submit registration data:', formData);
 
-  // In a real-world scenario, you would use FormData to handle file uploads.
+  // FormData is used to construct a set of key/value pairs representing form fields and their values,
+  // which can then be sent using fetch(). It's ideal for sending files.
   const submissionData = new FormData();
 
-  // Append all form fields to the FormData object.
-  for (const [key, value] of Object.entries(formData)) {
-    if (value) { // Ensure we don't append null or empty values if not desired
-        submissionData.append(key, value);
+  // Dynamically append all form fields from the state to the FormData object.
+  // This makes the code maintainable, as new fields in the form will be added automatically.
+  for (const key in formData) {
+    const value = formData[key];
+    // Ensure we don't append null or undefined values.
+    if (value !== null && value !== undefined) {
+      submissionData.append(key, value);
     }
   }
-  
-  /**
-   * ================= REAL FETCH LOGIC (COMMENTED OUT) =================
-   * In a live application, you would uncomment and use this block.
-   */
-  /*
+
   try {
     const response = await fetch(API_ENDPOINT, {
       method: 'POST',
       body: submissionData,
-      // You might need headers, for example, for an authorization token.
+      // IMPORTANT: Do NOT set the 'Content-Type' header manually when using FormData.
+      // The browser will automatically set it to 'multipart/form-data' with the correct boundary.
+      // If you had an auth token, you would add it here, e.g.:
       // headers: {
-      //   'Authorization': `Bearer ${YOUR_API_TOKEN}`
+      //   'Authorization': `Bearer YOUR_API_TOKEN`
       // }
     });
 
+    // The .ok property of the Response interface contains a boolean stating
+    // whether the response was successful (status in the range 200-299) or not.
     if (!response.ok) {
-      // Handle HTTP errors like 404 or 500
-      const errorBody = await response.json();
-      throw new Error(errorBody.message || `Request failed with status ${response.status}`);
+      // If the server returns an error (e.g., 400, 422, 500),
+      // we attempt to parse the error message from the response body.
+      let errorMessage = `Request failed with status ${response.status}`;
+      try {
+        const errorBody = await response.json();
+        // Use the server's error message if available.
+        errorMessage = errorBody.message || JSON.stringify(errorBody);
+      } catch (e) {
+        // If the error body isn't valid JSON, use the status text.
+        errorMessage = response.statusText;
+      }
+      // Throwing an error here will be caught by the catch block below.
+      throw new Error(errorMessage);
     }
 
+    // If the response is successful, parse the JSON body.
     const result = await response.json();
-    return { success: true, message: 'Registration successful!', data: result };
+
+    console.log('Server response:', result);
+    
+    // Return a standardized success object.
+    return {
+      success: true,
+      message: result.message || 'Registration successful!',
+      data: result,
+    };
 
   } catch (error) {
+    // This will catch network errors (e.g., user is offline) or the error thrown above.
     console.error('Registration API error:', error);
-    // Ensure the error is propagated or handled gracefully
-    return { success: false, message: error.message };
-  }
-  */
 
-  /**
-   * ================= SIMULATED FETCH LOGIC =================
-   * We will simulate the network request with a Promise and setTimeout.
-   */
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // You can test the error case by providing 'error@example.com' as the email.
-      if (formData.email !== 'error@example.com') { 
-        console.log('Simulated API call successful.');
-        resolve({
-          success: true,
-          message: 'Registration submitted successfully!',
-        });
-      } else {
-        // Simulate a business logic error response from the server
-        console.error('Simulated API call failed.');
-        resolve({
-          success: false,
-          message: 'This email address is blocked by the server.',
-        });
-      }
-    }, 3000); // 3-second delay to simulate network latency
-  });
+    // Return a standardized error object.
+    return {
+      success: false,
+      // Ensure we're passing a string message.
+      message: error instanceof Error ? error.message : 'An unknown network error occurred.',
+    };
+  }
 };
