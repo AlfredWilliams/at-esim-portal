@@ -154,4 +154,4 @@ const HomePage: React.FC<HomePageProps> = ({ setPage, setSelectedBundle, openCom
     );
 };
 
-export default HomePage;
+export default HomePage
