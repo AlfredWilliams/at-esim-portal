@@ -11,6 +11,12 @@
  * @param {import('../types').RegistrationFormData} formData - The registration form data object.
  * @returns {Promise<{success: boolean, message: string, data?: any}>}
  */
+
+// --- Configuration Constants ---
+const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
+const REQUEST_TIMEOUT_MS = 15000; // 15 seconds
+const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png'];
+
 export const submitRegistration = async (formData) => {
   const API_ENDPOINT = `${process.env.NEXT_PUBLIC_API_URL || ''}/api/register`;
 
@@ -20,20 +26,20 @@ export const submitRegistration = async (formData) => {
 
   // File validation for idFront
   if (formData.idFront) {
-    if (formData.idFront.size > 5 * 1024 * 1024) {
+    if (formData.idFront.size > MAX_FILE_SIZE_BYTES) {
       return { success: false, message: "ID front image too large (max 5MB)." };
     }
-    if (!['image/jpeg', 'image/png'].includes(formData.idFront.type)) {
+    if (!ALLOWED_IMAGE_TYPES.includes(formData.idFront.type)) {
       return { success: false, message: "Invalid ID image type. Allowed: JPG, PNG." };
     }
   }
 
   // File validation for selfieWithId
   if (formData.selfieWithId) {
-    if (formData.selfieWithId.size > 5 * 1024 * 1024) {
+    if (formData.selfieWithId.size > MAX_FILE_SIZE_BYTES) {
       return { success: false, message: "Selfie with ID too large (max 5MB)." };
     }
-    if (!['image/jpeg', 'image/png'].includes(formData.selfieWithId.type)) {
+    if (!ALLOWED_IMAGE_TYPES.includes(formData.selfieWithId.type)) {
       return { success: false, message: "Invalid selfie image type. Allowed: JPG, PNG." };
     }
   }
@@ -48,7 +54,7 @@ export const submitRegistration = async (formData) => {
 
   // Setup timeout
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 15000); // 15 seconds
+  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
   try {
     const response = await fetch(API_ENDPOINT, {
