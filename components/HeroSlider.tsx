@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Page } from '../types';
 import Button from './Button';
 import EsimIllustration from './icons/EsimIllustration';
@@ -54,6 +54,14 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ setPage, openCompatModal }) => 
         buttonText: t(slide.buttonKey),
     }));
 
+    // State and refs for dragging/swiping
+    const [isDragging, setIsDragging] = useState(false);
+    const [startPos, setStartPos] = useState(0);
+    const [currentTranslate, setCurrentTranslate] = useState(0);
+    const sliderRef = useRef<HTMLDivElement>(null);
+    const wasPlayingRef = useRef(true);
+    const draggedRef = useRef(false);
+
     const nextSlide = useCallback(() => {
         setCurrentSlide(prev => (prev === slides.length - 1 ? 0 : prev + 1));
     }, [slides.length]);
@@ -78,6 +86,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ setPage, openCompatModal }) => 
     };
 
     const handleButtonClick = (buttonKey: string) => {
+        if (draggedRef.current) return; // Prevent click after drag
         if (buttonKey === 'hero1Button') {
             openCompatModal();
         } else if (buttonKey === 'hero2Button') {
@@ -87,12 +96,81 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ setPage, openCompatModal }) => 
         }
     };
     
+    // Swipe/Drag handlers
+    const getPositionX = (event: TouchEvent | MouseEvent) => {
+        return event.type.includes('mouse')
+            ? (event as MouseEvent).clientX
+            : (event as TouchEvent).touches[0].clientX;
+    };
+
+    const handleDragStart = (e: React.TouchEvent | React.MouseEvent) => {
+        draggedRef.current = false;
+        wasPlayingRef.current = isPlaying;
+        if (isPlaying) setIsPlaying(false);
+
+        setIsDragging(true);
+        setStartPos(getPositionX(e.nativeEvent));
+    };
+
+    const handleDragMove = (e: React.TouchEvent | React.MouseEvent) => {
+        if (!isDragging) return;
+        const currentPosition = getPositionX(e.nativeEvent);
+        const move = currentPosition - startPos;
+
+        if (Math.abs(move) > 5) { // Threshold to consider it a drag
+            draggedRef.current = true;
+        }
+
+        setCurrentTranslate(move);
+    };
+
+    const handleDragEnd = () => {
+        if (!isDragging) return;
+
+        const sliderWidth = sliderRef.current?.offsetWidth || 0;
+        const threshold = sliderWidth / 4;
+
+        if (currentTranslate < -threshold) {
+            nextSlide();
+        } else if (currentTranslate > threshold) {
+            prevSlide();
+        }
+        
+        setCurrentTranslate(0);
+        setIsDragging(false);
+
+        if (wasPlayingRef.current) {
+            // Use a short timeout to let other state updates finish
+            setTimeout(() => {
+                setIsPlaying(true);
+            });
+        }
+    };
+
+    const sliderStyle = {
+        transform: `translateX(calc(-${currentSlide * 100}% + ${currentTranslate}px))`,
+        transition: isDragging ? 'none' : 'transform 0.7s ease-in-out',
+        cursor: isDragging ? 'grabbing' : 'grab',
+    };
 
     return (
-        <section className="relative w-full h-[70vh] max-h-[750px] overflow-hidden text-white rounded-3xl">
-            <div className="w-full h-full flex transition-transform duration-700 ease-in-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+        <section 
+            className="relative w-full h-[70vh] max-h-[750px] overflow-hidden text-white rounded-3xl touch-pan-y"
+            onMouseDown={handleDragStart}
+            onMouseMove={handleDragMove}
+            onMouseUp={handleDragEnd}
+            onMouseLeave={handleDragEnd}
+            onTouchStart={handleDragStart}
+            onTouchMove={handleDragMove}
+            onTouchEnd={handleDragEnd}
+        >
+            <div 
+                ref={sliderRef}
+                className="w-full h-full flex" 
+                style={sliderStyle}
+            >
                 {slides.map((slide, index) => (
-                    <div key={index} className={`w-full h-full flex-shrink-0 ${slide.color} flex items-center justify-center p-4`}>
+                    <div key={index} className={`w-full h-full flex-shrink-0 ${slide.color} flex items-center justify-center p-4 select-none`}>
                         { index === 0 ? (
                              <div className="container mx-auto grid md:grid-cols-2 gap-8 items-center w-full max-w-6xl px-4 sm:px-6 lg:px-8">
                                 <div className="text-center md:text-left animate-fade-in-up">
@@ -103,7 +181,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ setPage, openCompatModal }) => 
                                     </Button>
                                 </div>
                                 <div className="hidden md:flex justify-center items-center animate-fade-in-up">
-                                    <EsimIllustration className="w-full max-w-sm h-auto" />
+                                    <EsimIllustration className="w-full max-w-sm h-auto pointer-events-none" />
                                 </div>
                             </div>
                         ) : (
